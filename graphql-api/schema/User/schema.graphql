@@ -1,0 +1,23 @@
+type FavoriteCatPics {
+  id: ID
+  url: String!
+}
+
+type User {
+  id: ID # unique id for the user
+  email: String! # we will also require a unique email per user
+  favoriteCatPics: [FavoriteCatPics] # array of cat pic links
+  jwt: String #json web token for access
+}
+
+type Query {
+  # Return a user by their id
+  user(userId: ID!): User
+}
+
+type Mutation {
+  # send a message to a group
+  login(email: String!, password: String!): User
+  signup(email: String!, password: String!, username: String): User
+  addFavoriteCatPic(url: String!): User
+}
