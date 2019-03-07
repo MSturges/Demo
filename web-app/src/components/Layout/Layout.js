@@ -26,17 +26,13 @@ const styles = theme => ({
     marginLeft: -12,
     marginRight: 20
   },
-  appBar: {
-    paddingLeft: theme.spacing.unit * 3,
-    paddingRight: theme.spacing.unit * 3
-  },
   toolBar: {
     width: "100%",
     maxWidth: 1000,
     margin: "0 auto"
   },
   main: {
-    padding: theme.spacing.unit * 3,
+    paddingTop: 32,
     width: "100%",
     maxWidth: 1000,
     margin: "0 auto"

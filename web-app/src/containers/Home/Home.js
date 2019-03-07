@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { PureComponent, Fragment } from "react";
 import { connect } from "react-redux";
 import { compose, graphql } from "react-apollo";
 
@@ -13,23 +13,24 @@ import CardActions from "@material-ui/core/CardActions";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import IconButton from "@material-ui/core/IconButton";
+import Paper from "@material-ui/core/Paper";
 
 import ADD_FAVORITE_MUTATION from "../../graphql/mutations/add-favorite-mutation";
+import Notification from "../../components/Notification/Notification";
 
 const styles = {
-  content: {
-    flexGrow: 1,
-    padding: 16,
-    minHeight: 500,
+  paper: {
+    height: "auto",
     display: "flex",
+    justifyContent: "center",
     alignItems: "center",
-    justifyContent: "space-between",
-    flexDirection: "column"
+    marginBottom: 16,
+    padding: 8
   },
   card: {
     height: 400,
     display: "flex",
-    alignItems: "flex-start",
+    alignItems: "center",
     flexDirection: "column"
   },
   media: {
@@ -39,18 +40,21 @@ const styles = {
     backgroundSize: "contain"
   },
   buttonWrapper: {
+    marginTop: 16,
     display: "flex",
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
+    justifyContent: "center"
   },
   button: {
     background: "linear-gradient(45deg, #3ED3CF 30%, #1FE9AE 90%)"
   }
 };
-class RandomCatPicture extends PureComponent {
+class Home extends PureComponent {
   state = {
     loading: false,
-    file: "https://purr.objects-us-east-1.dream.io/i/lddng.jpg"
+    file: "https://purr.objects-us-east-1.dream.io/i/lddng.jpg",
+    showNotification: false
   };
   getRandomImage = () => {
     this.setState({ loading: true });
@@ -71,25 +75,37 @@ class RandomCatPicture extends PureComponent {
     this.props
       .addFavrotie({ url: file })
       .then(({ data }) => {
-        console.log("data", data);
+        this.setState({ showNotification: true });
       })
       .catch(error => {
         console.log("error", error);
       });
   };
+
+  handleCloseNotification = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ showNotification: false });
+  };
   render() {
     const { classes, userEmail } = this.props;
-    const { loading, file } = this.state;
+    const { loading, file, showNotification } = this.state;
     return (
-      <div className={classes.content}>
-        <Typography variant="subtitle1" color="secondary">
-          {userEmail
-            ? `Welcome back ${userEmail}!`
-            : `Welcome to randam cat pic generator! Login to save cats to favorites`}
-        </Typography>
+      <Fragment>
+        <Paper className={classes.paper}>
+          <Typography variant="h4" color="secondary">
+            {userEmail
+              ? `Welcome back ${userEmail}`
+              : `Welcome to random cat pic generator`}
+          </Typography>
+        </Paper>
 
         {loading ? (
-          <CircularProgress className={classes.progress} color="secondary" />
+          <Card className={classes.card}>
+            <CircularProgress className={classes.progress} color="secondary" />
+          </Card>
         ) : (
           <Card className={classes.card}>
             <CardMedia
@@ -109,11 +125,17 @@ class RandomCatPicture extends PureComponent {
             </CardActions>
           </Card>
         )}
-
-        <Button className={classes.button} onClick={this.getRandomImage}>
-          Give me a cat Picture
-        </Button>
-      </div>
+        <div className={classes.buttonWrapper}>
+          <Button className={classes.button} onClick={this.getRandomImage}>
+            Give me a cat Picture
+          </Button>
+        </div>
+        <Notification
+          showNotification={showNotification}
+          closeNotification={this.handleCloseNotification}
+          message="Added cat to Favorites"
+        />
+      </Fragment>
     );
   }
 }
@@ -140,4 +162,4 @@ export default compose(
     mapStateToProps,
     null
   )
-)(RandomCatPicture);
+)(Home);

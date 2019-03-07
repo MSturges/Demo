@@ -27,14 +27,17 @@ const styles = () => ({
     alignItems: "flex-start",
     paddingTop: 50
   },
+  paper: {
+    backgroundColor: "white"
+  },
   dialogTitle: {
     justifyContent: "space-between",
     alignItems: "center",
     display: "flex",
     flexDirection: "row"
   },
-  paper: {
-    backgroundColor: "white"
+  input: {
+    height: 40
   },
   button: {
     background: "linear-gradient(45deg, #3ED3CF 30%, #1FE9AE 90%)",
@@ -121,16 +124,17 @@ class AuthModal extends Component {
           </div>
         </DialogTitle>
         <DialogContent>
-          <FormControl className={classes.margin} fullWidth margin="dense">
+          <FormControl fullWidth>
             <InputLabel htmlFor="input-with-icon-adornment">Email</InputLabel>
             <Input
+              className={classes.input}
               id="email"
               autoFocus
               value={email}
               onChange={event => this.setState({ email: event.target.value })}
             />
           </FormControl>
-          <FormControl fullWidth margin="dense">
+          <FormControl fullWidth>
             <InputLabel htmlFor="input-with-icon-adornment">
               Password
             </InputLabel>
@@ -138,6 +142,7 @@ class AuthModal extends Component {
               id="password"
               type="password"
               value={password}
+              className={classes.input}
               onChange={event =>
                 this.setState({ password: event.target.value })
               }

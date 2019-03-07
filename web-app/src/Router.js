@@ -4,20 +4,20 @@ import { asyncComponent } from "react-async-component";
 
 import Layout from "./components/Layout/Layout";
 
-const RandomCatPicture = asyncComponent({
-  resolve: () => import("./containers/RandomCatPicture/RandomCatPicture")
+const Home = asyncComponent({
+  resolve: () => import("./containers/Home/Home")
 });
 
-const FavoriteCatPictures = asyncComponent({
-  resolve: () => import("./containers/FavoriteCatPictures/FavoriteCatPictures")
+const Favorites = asyncComponent({
+  resolve: () => import("./containers/Favorites/Favorites")
 });
 
 class Router extends PureComponent {
   render() {
     let routes = (
       <Switch>
-        <Route exact path="/" component={RandomCatPicture} />
-        <Route exact path="/favorites" component={FavoriteCatPictures} />
+        <Route exact path="/" component={Home} />
+        <Route exact path="/favorites" component={Favorites} />
         <Redirect from="*" to="/" />
       </Switch>
     );
