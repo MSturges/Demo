@@ -40,8 +40,7 @@ export const resolvers = {
               let newUser = {
                 email,
                 password: hash,
-                jwtVersion: 1,
-                favoriteCatPics: []
+                jwtVersion: 1
               };
               return CreateUserQuery(newUser).then(data => {
                 return data;

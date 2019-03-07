@@ -12,7 +12,7 @@ type User {
 
 type Query {
   # Return a user by their id
-  user(userId: ID!): User
+  user(userId: String!): User
 }
 
 type Mutation {

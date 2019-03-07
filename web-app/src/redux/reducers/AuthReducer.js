@@ -1,23 +1,26 @@
 import { REHYDRATE } from "redux-persist";
 import Immutable from "seamless-immutable";
 
-export const LOGOUT = "LOGOUT";
-export const SET_CURRENT_USER = "SET_CURRENT_USER";
+import { LOGOUT, SET_CURRENT_USER } from "../types";
 
-const initialState = Immutable({
-  loading: true
-});
-
-const AuthReducer = (state = initialState, action) => {
+const AuthReducer = (state = {}, action) => {
   switch (action.type) {
     case REHYDRATE:
       // convert persisted data to Immutable and confirm rehydration
       const { payload = {} } = action;
-      return Immutable(payload.auth || state).set("loading", false);
+      return Immutable(payload.auth || state);
     case SET_CURRENT_USER:
+      // TODO
+      // this is hacky, I also need the jwt in my apollo-client configuration
+      // might need to rethink using redux-persist..
+      localStorage.setItem("catJWT", action.user.jwt);
+      //
       return state.merge(action.user);
     case LOGOUT:
-      return Immutable({ loading: false });
+      // hacky, don't like.
+      localStorage.removeItem("catJWT");
+      //
+      return Immutable({});
     default:
       return state;
   }
